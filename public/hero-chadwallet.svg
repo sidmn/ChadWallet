@@ -1,0 +1,30 @@
+<svg width="1800" height="1200" viewBox="0 0 1800 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1800" height="1200" fill="#080806"/>
+  <g opacity=".45">
+    <path d="M-80 768C263 616 424 786 694 605C982 412 1202 318 1882 482" stroke="#C8FF2C" stroke-width="3"/>
+    <path d="M-60 872C248 712 458 884 727 698C1003 507 1257 404 1864 558" stroke="#58D6FF" stroke-width="2"/>
+    <path d="M-53 991C281 790 510 1007 808 801C1127 580 1342 519 1887 701" stroke="#4EF1B0" stroke-width="3"/>
+  </g>
+  <g transform="translate(1050 215) rotate(8)">
+    <rect x="0" y="0" width="470" height="720" rx="56" fill="#11140D" stroke="#F8F8EC" stroke-width="8"/>
+    <rect x="35" y="70" width="400" height="580" rx="34" fill="#C8FF2C"/>
+    <rect x="72" y="130" width="326" height="112" fill="#080806"/>
+    <rect x="72" y="288" width="326" height="60" fill="#080806"/>
+    <rect x="72" y="376" width="220" height="60" fill="#080806"/>
+    <rect x="72" y="492" width="326" height="92" fill="#080806"/>
+    <circle cx="358" cy="537" r="24" fill="#C8FF2C"/>
+  </g>
+  <g transform="translate(170 190)">
+    <rect x="0" y="0" width="520" height="520" fill="#C8FF2C"/>
+    <path d="M118 148.5C118 117.848 142.848 93 173.5 93H357C379.644 93 398 111.356 398 134V160H185C172.85 160 163 169.85 163 182V333C163 345.15 172.85 355 185 355H398V386C398 408.644 379.644 427 357 427H173.5C142.848 427 118 402.152 118 371.5V148.5Z" fill="#080806"/>
+    <path d="M205 207C205 189.327 219.327 175 237 175H427C444.673 175 459 189.327 459 207V311C459 328.673 444.673 343 427 343H237C219.327 343 205 328.673 205 311V207Z" fill="#080806"/>
+    <circle cx="396" cy="259" r="32" fill="#C8FF2C"/>
+  </g>
+  <g opacity=".9">
+    <rect x="130" y="850" width="260" height="72" fill="#F8F8EC"/>
+    <rect x="414" y="850" width="180" height="72" fill="#C8FF2C"/>
+    <rect x="617" y="850" width="320" height="72" fill="#58D6FF"/>
+    <rect x="963" y="850" width="210" height="72" fill="#FF6F3C"/>
+    <rect x="1198" y="850" width="270" height="72" fill="#4EF1B0"/>
+  </g>
+</svg>
