@@ -1,101 +1,90 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 
 export function AuthButton() {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="inline-flex h-10 items-center justify-center border border-black bg-[#21f17b] px-4 text-xs font-black uppercase text-[#07101b] shadow-[0_10px_24px_rgba(0,0,0,.16)] transition hover:bg-white"
-      >
-        Login
-      </button>
-      {open ? <AuthModal onClose={() => setOpen(false)} /> : null}
-    </>
-  );
-}
-
-function AuthModal({ onClose }: { onClose: () => void }) {
   const appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
 
-  if (!appId) {
+  if (appId) {
+    return <PrivyAuthControl />;
+  }
+
+  return <LoginModalButton />;
+}
+
+function PrivyAuthControl() {
+  const { authenticated, login, logout, user, ready } = usePrivy();
+  const [signingOut, setSigningOut] = useState(false);
+  const email = user?.google?.email ?? user?.email?.address;
+  const displayName = email ?? "Signed in";
+  const initial = displayName.charAt(0).toUpperCase();
+
+  useEffect(() => {
+    if (!authenticated) {
+      setSigningOut(false);
+    }
+  }, [authenticated]);
+
+  if (!ready) {
+    return <AuthStatusPill label="Checking" />;
+  }
+
+  if (authenticated && !signingOut) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-5 backdrop-blur-sm">
-        <AuthShell onClose={onClose}>
-          <button
-            type="button"
-            disabled
-            className="mt-6 flex w-full cursor-not-allowed items-center justify-center gap-3 border border-white/10 bg-white px-5 py-4 text-sm font-black uppercase text-[#07101b] opacity-60"
-          >
-            <GoogleMark />
-            Continue with Google
-          </button>
-        </AuthShell>
+      <div className="flex h-10 items-center border border-black/10 bg-white/90 text-[#07101b] shadow-[0_10px_24px_rgba(0,0,0,.14)] backdrop-blur">
+        <div className="hidden max-w-44 items-center gap-2 px-3 sm:flex">
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#07101b] text-xs font-black uppercase text-[#21f17b]">
+            {initial}
+          </span>
+          <span className="truncate text-xs font-black normal-case">{displayName}</span>
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setSigningOut(true);
+            void logout();
+          }}
+          className="h-full border-l border-black/10 px-4 text-xs font-black uppercase transition hover:bg-[#07101b] hover:text-white"
+        >
+          Sign out
+        </button>
       </div>
     );
   }
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-5 backdrop-blur-sm">
-      <AuthShell onClose={onClose}>
-        <PrivyLogin />
-      </AuthShell>
-    </div>
-  );
-}
-
-function PrivyLogin() {
-  const { authenticated, login, logout, user, ready } = usePrivy();
-  const label = authenticated ? user?.google?.email ?? "Signed in" : "Continue with Google";
+  if (signingOut) {
+    return <AuthStatusPill label="Signing out" />;
+  }
 
   return (
     <button
       type="button"
-      disabled={!ready}
-      onClick={() => (authenticated ? logout() : login())}
-      className="mt-6 flex w-full items-center justify-center gap-3 border border-white/10 bg-white px-5 py-4 text-sm font-black uppercase text-[#07101b] transition hover:bg-[#21f17b] disabled:cursor-not-allowed disabled:opacity-60"
+      onClick={() => login({ loginMethods: ["google"] })}
+      className="inline-flex h-10 items-center justify-center border border-black bg-[#21f17b] px-4 text-xs font-black uppercase text-[#07101b] shadow-[0_10px_24px_rgba(0,0,0,.16)] transition hover:bg-white"
     >
-      <GoogleMark />
-      {label}
+      Login
     </button>
   );
 }
 
-function AuthShell({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+function LoginModalButton() {
   return (
-    <div className="w-full max-w-sm border border-white/10 bg-[#08111f] p-5 text-white shadow-[0_30px_80px_rgba(0,0,0,.45)]">
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <Image src="/assets/logo/dark.png" alt="ChadWallet" width={42} height={42} className="rounded-full" />
-          <div>
-            <h2 className="text-xl font-black">Log in</h2>
-            <p className="text-sm font-semibold text-zinc-400">Use ChadWallet on web.</p>
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={onClose}
-          className="flex h-9 w-9 items-center justify-center border border-white/10 text-xl font-black text-zinc-300 transition hover:border-[#21f17b] hover:text-[#21f17b]"
-          aria-label="Close login modal"
-        >
-          x
-        </button>
-      </div>
-      {children}
-    </div>
+    <button
+      type="button"
+      disabled
+      className="inline-flex h-10 cursor-not-allowed items-center justify-center border border-black bg-[#21f17b] px-4 text-xs font-black uppercase text-[#07101b] opacity-60 shadow-[0_10px_24px_rgba(0,0,0,.16)]"
+    >
+      Login
+    </button>
   );
 }
 
-function GoogleMark() {
+function AuthStatusPill({ label }: { label: string }) {
   return (
-    <span className="flex h-6 w-6 items-center justify-center rounded-full border border-zinc-200 bg-white text-base font-black text-[#4285f4]">
-      G
-    </span>
+    <div className="inline-flex h-10 items-center gap-2 border border-black/10 bg-white/80 px-4 text-xs font-black uppercase text-[#07101b] shadow-[0_10px_24px_rgba(0,0,0,.14)] backdrop-blur">
+      <span className="h-2 w-2 animate-pulse rounded-full bg-[#21f17b]" />
+      {label}
+    </div>
   );
 }

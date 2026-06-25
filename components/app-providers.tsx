@@ -20,7 +20,9 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
           logo: "/assets/logo/dark.png"
         },
         embeddedWallets: {
-          createOnLogin: "users-without-wallets"
+          solana: {
+            createOnLogin: "users-without-wallets"
+          }
         }
       }}
     >
