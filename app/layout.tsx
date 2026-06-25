@@ -4,7 +4,12 @@ import { AppProviders } from "@/components/app-providers";
 
 export const metadata: Metadata = {
   title: "ChadWallet",
-  description: "A Solana wallet landing page with live token movement, Privy Google sign-in, and app store links."
+  description: "A Solana wallet landing page with live token movement, Privy Google sign-in, and app store links.",
+  icons: {
+    icon: "/assets/logo/light.png",
+    shortcut: "/assets/logo/light.png",
+    apple: "/assets/logo/light.png"
+  }
 };
 
 export default function RootLayout({
